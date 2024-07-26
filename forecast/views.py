@@ -1,9 +1,11 @@
 from django.shortcuts import render
+import os, math
 
 import requests
 
 def get_Data(city_name):
-    api_key = '72decfa09a508b1c0ffeddfe426d5efe'
+    api_key = os.environ['api_key']
+
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}"
 
     response = requests.get(url).json()
@@ -21,12 +23,12 @@ def weather(request):
         data = get_Data(city)
 
         if data == 'error':
-            return render(request, 'weather.html',{'erro':'Escreva uma cidade válida'})
+            return render(request, 'weather.html',{'erro':'Escreva uma cidade inválida'})
 
         for key, value in data['main'].items():
             if key == 'temp':
                 aux = value - 273.15
-                data['main'][key] = round(aux,0)
+                data['main'][key] = math.ceil(aux)
 
         data['main']['description'] = data['weather'][0]['description']
         data['main']['name'] = city
