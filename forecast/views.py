@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import os, math
+from django.http import HttpResponse
 
 import requests
 
@@ -38,4 +39,6 @@ def weather(request):
     return render(request, "weather.html")
 
 
- 
+def ola(request):
+
+    return HttpResponse(request, 'Olá, Mundo')
